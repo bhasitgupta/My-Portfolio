@@ -4,7 +4,8 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import FlowArt, { FlowSection } from "@/components/ui/story-scroll";
 import TrueFocus from "@/components/ui/TrueFocus";
-import { Linkedin, Github, Twitter, Mail, Phone } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
+import { GithubIcon, LinkedinIcon, TwitterIcon } from "@/components/icons/GithubIcon";
 
 // Dynamic imports — disable SSR for WebGL/canvas components
 const Beams = dynamic(() => import("@/components/ui/Beams"), { ssr: false });
@@ -98,9 +99,9 @@ function ScrollHint({ color = "rgba(255,255,255,0.35)" }: { color?: string }) {
 //  05 Contact— charcoal-black
 
 const contact = [
-  { n: "01", icon: <Linkedin size={18} />, l: "LinkedIn — /in/bhasitgupta" },
-  { n: "02", icon: <Github size={18} />, l: "GitHub — @bhasitgupta" },
-  { n: "03", icon: <Twitter size={18} />, l: "Twitter / X — @Bhasit1009" },
+  { n: "01", icon: <LinkedinIcon size={18} />, l: "LinkedIn — /in/bhasitgupta" },
+  { n: "02", icon: <GithubIcon size={18} />, l: "GitHub — @bhasitgupta" },
+  { n: "03", icon: <TwitterIcon size={18} />, l: "Twitter / X — @Bhasit1009" },
   { n: "04", icon: <Mail size={18} />, l: "Email — bhasitgupta@gmail.com" },
   { n: "05", icon: <Phone size={18} />, l: "Phone — +91 7974169120" },
 ];
@@ -303,8 +304,8 @@ export function PortfolioFlow() {
 
           <div style={{ display: "flex", flexWrap: "wrap", gap: "3rem" }}>
             {[
-              { n: "01", title: "Python Assignment", desc: "Comprehensive Python programming project demonstrating backend logic, scripting, and data structure implementations.", link: "https://github.com/bhasitgupta/python-assignment" },
-              { n: "02", title: "Glitchless", desc: "High-density enterprise SaaS platform with a highly polished, futuristic Next.js interface and dashboard.", link: "https://github.com/bhasitgupta/Glitchless" },
+              { n: "01", title: "Batman", desc: "Enterprise Next.js dashboard platform featuring a highly polished, high-density futuristic UI/UX.", link: "https://github.com/bhasitgupta/Glitchless" },
+              { n: "02", title: "Developer Portfolio", desc: "High-end cinematic AI portfolio built with Next.js, GSAP, Three.js, and immersive sound engineering.", link: "https://github.com/bhasitgupta/My-Portfolio" },
               { n: "03", title: "AI Anxiety Detector", desc: "Machine learning model built with Python to analyze and detect anxiety patterns using artificial intelligence.", link: "https://github.com/bhasitgupta/Bhasit-Gupta-Ai-Anxiety-Detector" },
             ].map(({ n, title, desc, link }) => (
               <div key={title} style={{ flex: "1 1 240px" }}>
