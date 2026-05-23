@@ -5,6 +5,7 @@ import { LenisProvider } from "@/components/LenisProvider";
 import { CustomCursor } from "@/components/CustomCursor";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://bhasitportfolio.vercel.app"),
   title: "Bhasit Gupta | Developer",
   description: "AI/ML Developer & Full Stack Engineer. Building at the intersection of intelligence and craft.",
   keywords: ["Bhasit Gupta", "Developer", "AI ML", "Full Stack", "Portfolio"],
