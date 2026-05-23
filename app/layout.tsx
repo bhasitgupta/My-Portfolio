@@ -3,7 +3,6 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { LenisProvider } from "@/components/LenisProvider";
 import { CustomCursor } from "@/components/CustomCursor";
-import { MusicPlayer } from "@/components/MusicPlayer";
 
 export const metadata: Metadata = {
   title: "Bhasit Gupta | Developer",
@@ -24,7 +23,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <LenisProvider>
             <CustomCursor />
             {children}
-            <MusicPlayer />
           </LenisProvider>
         </ThemeProvider>
       </body>

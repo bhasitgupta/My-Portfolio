@@ -6,6 +6,7 @@ import { Loader } from "@/components/Loader";
 
 export default function Home() {
   const [phase, setPhase] = useState<"loading" | "portfolio">("loading");
+  const [shouldPlayAudio, setShouldPlayAudio] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -15,7 +16,12 @@ export default function Home() {
 
   return (
     <>
-      {phase === "loading" && <Loader onComplete={() => setPhase("portfolio")} />}
+      {phase === "loading" && (
+        <Loader onComplete={(audio) => {
+          setShouldPlayAudio(audio);
+          setPhase("portfolio");
+        }} />
+      )}
       
       <div style={{ 
         opacity: phase === "portfolio" ? 1 : 0, 
@@ -24,7 +30,7 @@ export default function Home() {
         height: "100%", width: "100%"
       }}>
         {phase !== "loading" && <PortfolioFlow />}
-        {phase !== "loading" && <MusicPlayer autoPlay={false} />}
+        {phase !== "loading" && <MusicPlayer autoPlay={shouldPlayAudio} />}
       </div>
     </>
   );
