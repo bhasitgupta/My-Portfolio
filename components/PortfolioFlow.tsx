@@ -155,7 +155,7 @@ export function PortfolioFlow() {
             {/* Right — 3D holographic ProfileCard with real photo */}
             <div style={{ flex: "0 0 auto" }}>
               <ProfileCard
-                avatarUrl="/photo-1.png"
+                avatarUrl="/photo-8.png"
                 name="Bhasit Gupta"
                 title="AI/ML Developer"
                 handle="Bhasit Gupta"
