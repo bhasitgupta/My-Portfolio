@@ -303,9 +303,9 @@ export function PortfolioFlow() {
 
           <div style={{ display: "flex", flexWrap: "wrap", gap: "3rem" }}>
             {[
-              { n: "01", title: "AI Content Generator", desc: "GPT-powered platform generating SEO-optimized content at scale. FastAPI + React + streaming output.", link: "https://github.com/bhasitgupta" },
-              { n: "02", title: "Neural Style Transfer", desc: "Real-time artistic style transfer via PyTorch CNNs. GPU-accelerated processing with a clean web UI.", link: "https://github.com/bhasitgupta" },
-              { n: "03", title: "Sentiment Analyzer", desc: "BERT-based NLP pipeline at 94% accuracy. Live social dashboard + trend alerts.", link: "https://github.com/bhasitgupta" },
+              { n: "01", title: "Draftdeckai", desc: "Open-source AI document platform. Transforms natural language ideas into polished resumes, presentations, and CVs.", link: "https://github.com/bhasitgupta/Draftdeckai" },
+              { n: "02", title: "Glitchless", desc: "High-density enterprise SaaS platform with a highly polished, futuristic Next.js interface and dashboard.", link: "https://github.com/bhasitgupta/Glitchless" },
+              { n: "03", title: "AI Anxiety Detector", desc: "Machine learning model built with Python to analyze and detect anxiety patterns using artificial intelligence.", link: "https://github.com/bhasitgupta/Bhasit-Gupta-Ai-Anxiety-Detector" },
             ].map(({ n, title, desc, link }) => (
               <div key={title} style={{ flex: "1 1 240px" }}>
                 <p style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.65rem", color: "#a78bfa", letterSpacing: "0.2em", marginBottom: "0.6rem" }}>{n}</p>

@@ -3,38 +3,16 @@
 import { useEffect, useState, useRef } from "react";
 import gsap from "gsap";
 
-const LOG_MESSAGES = [
-  "INITIALIZING NEURAL ENGINE...",
-  "BYPASSING SECURITY PROTOCOLS...",
-  "ESTABLISHING SECURE CONNECTION...",
-  "LOADING CORE MODULES...",
-  "RENDERING HOLOGRAPHIC INTERFACE...",
-  "CALIBRATING AI MODELS...",
-  "SYNCHRONIZING DATABASES...",
-  "BOOTING PORTFOLIO OS v2.4.1...",
-];
-
 export function Loader({ onComplete }: { onComplete: () => void }) {
   const [progress, setProgress] = useState(0);
-  const [logs, setLogs] = useState<string[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const coreRef = useRef<HTMLDivElement>(null);
   const percentRef = useRef<HTMLDivElement>(null);
   const burstRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Lock scroll
     document.body.style.overflow = "hidden";
-
-    // Terminal log simulator
-    let logIndex = 0;
-    const logInterval = setInterval(() => {
-      if (logIndex < LOG_MESSAGES.length) {
-        setLogs((prev) => [...prev.slice(-4), LOG_MESSAGES[logIndex]]);
-        logIndex++;
-      }
-    }, 400);
 
     let ctx = gsap.context(() => {
       const tl = gsap.timeline({
@@ -47,16 +25,8 @@ export function Loader({ onComplete }: { onComplete: () => void }) {
       // 1. Initial AI Core pulse & fade in
       tl.fromTo(
         coreRef.current,
-        { scale: 0.5, opacity: 0, filter: "blur(20px)" },
+        { scale: 0.8, opacity: 0, filter: "blur(10px)" },
         { scale: 1, opacity: 1, filter: "blur(0px)", duration: 1.5, ease: "power3.out" }
-      );
-
-      // 2. Text fade in
-      tl.fromTo(
-        textRef.current,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 1, ease: "power2.out" },
-        "-=1"
       );
 
       // 3. Progress 0 -> 100
@@ -94,7 +64,6 @@ export function Loader({ onComplete }: { onComplete: () => void }) {
     }, containerRef);
 
     return () => {
-      clearInterval(logInterval);
       document.body.style.overflow = "";
       ctx.revert();
     };
@@ -156,77 +125,45 @@ export function Loader({ onComplete }: { onComplete: () => void }) {
         }}
       />
 
-      <div style={{ zIndex: 2, display: "flex", flexDirection: "column", alignItems: "center", width: "100%", padding: "0 2rem" }}>
+      <div style={{ zIndex: 2, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", height: "100%" }}>
         
-        {/* Terminal Logs (Top Left) */}
-        <div style={{ position: "absolute", top: "2rem", left: "2rem", maxWidth: "400px", zIndex: 3 }}>
-          {logs.map((log, i) => (
-            <div
-              key={i}
-              style={{
-                fontSize: "0.65rem",
-                color: i === logs.length - 1 ? "#4fc9fa" : "rgba(79, 201, 250, 0.4)",
-                letterSpacing: "0.15em",
-                marginBottom: "0.5rem",
-                textShadow: i === logs.length - 1 ? "0 0 8px rgba(79, 201, 250, 0.6)" : "none",
-                animation: "fadeSlideIn 0.3s ease-out forwards",
-              }}
-            >
-              {`> ${log}`}
-            </div>
-          ))}
-        </div>
-
-        {/* Center Holographic AI Core */}
-        <div ref={coreRef} style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center", width: "300px", height: "300px" }}>
+        {/* Center Sleek Progress Ring */}
+        <div ref={coreRef} style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center", width: "320px", height: "320px" }}>
           
-          {/* Rotating Rings */}
-          <div className="spin-slow" style={{ position: "absolute", inset: 0, borderRadius: "50%", border: "1px solid rgba(79, 201, 250, 0.15)", borderTopColor: "#4fc9fa", boxShadow: "0 0 20px rgba(79, 201, 250, 0.2)" }} />
-          <div className="spin-reverse-fast" style={{ position: "absolute", inset: "20px", borderRadius: "50%", border: "2px dashed rgba(124, 106, 247, 0.3)", borderBottomColor: "#7c6af7" }} />
-          <div className="spin-slow" style={{ position: "absolute", inset: "45px", borderRadius: "50%", border: "1px dotted rgba(255, 107, 107, 0.4)", borderLeftColor: "#ff6b6b" }} />
+          <svg width="320" height="320" style={{ position: "absolute", inset: 0, transform: "rotate(-90deg)" }}>
+            <circle cx="160" cy="160" r="150" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+            <circle 
+              cx="160" cy="160" r="150" fill="none" 
+              stroke="url(#progressGrad)" 
+              strokeWidth="2" 
+              strokeDasharray={2 * Math.PI * 150}
+              strokeDashoffset={(2 * Math.PI * 150) - (progress / 100) * (2 * Math.PI * 150)}
+              strokeLinecap="round"
+              style={{ transition: "stroke-dashoffset 0.1s linear" }}
+            />
+            <defs>
+              <linearGradient id="progressGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#7c6af7" />
+                <stop offset="100%" stopColor="#4fc9fa" />
+              </linearGradient>
+            </defs>
+          </svg>
           
           {/* Glowing Center Percentage */}
           <div
             ref={percentRef}
             style={{
               fontFamily: "Outfit, sans-serif",
-              fontSize: "4.5rem",
-              fontWeight: 900,
+              fontSize: "5rem",
+              fontWeight: 300,
+              letterSpacing: "-0.04em",
               color: "#fff",
-              textShadow: "0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(79, 201, 250, 0.4)",
               display: "flex",
               alignItems: "baseline",
             }}
           >
             {progress}
-            <span style={{ fontSize: "1.5rem", color: "#4fc9fa", marginLeft: "2px" }}>%</span>
-          </div>
-        </div>
-
-        {/* Bottom Status Text */}
-        <div ref={textRef} style={{ marginTop: "3rem", display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" }}>
-          <div style={{ fontSize: "0.85rem", letterSpacing: "0.3em", color: "#e8e0ff", textTransform: "uppercase" }}>
-            {progress === 100 ? (
-              <span style={{ color: "#4fc9fa", textShadow: "0 0 10px #4fc9fa" }}>AI SYSTEM ONLINE</span>
-            ) : (
-              "BOOTING SEQUENCE"
-            )}
-          </div>
-          
-          {/* High-tech Progress Bar */}
-          <div style={{ width: "240px", height: "2px", background: "rgba(255,255,255,0.1)", position: "relative", overflow: "hidden" }}>
-            <div
-              style={{
-                position: "absolute",
-                left: 0,
-                top: 0,
-                bottom: 0,
-                width: `${progress}%`,
-                background: "linear-gradient(90deg, #7c6af7, #4fc9fa)",
-                boxShadow: "0 0 10px rgba(79, 201, 250, 0.8)",
-                transition: "width 0.1s linear",
-              }}
-            />
+            <span style={{ fontSize: "1.5rem", fontWeight: 400, color: "rgba(255,255,255,0.4)", marginLeft: "4px" }}>%</span>
           </div>
         </div>
 
@@ -236,20 +173,6 @@ export function Loader({ onComplete }: { onComplete: () => void }) {
         @keyframes fadeSlideIn {
           from { opacity: 0; transform: translateY(10px); }
           to { opacity: 1; transform: translateY(0); }
-        }
-        .spin-slow {
-          animation: spin 12s linear infinite;
-        }
-        .spin-reverse-fast {
-          animation: spin-reverse 8s linear infinite;
-        }
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        @keyframes spin-reverse {
-          from { transform: rotate(360deg); }
-          to { transform: rotate(0deg); }
         }
       `}} />
     </div>
