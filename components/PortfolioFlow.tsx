@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import FlowArt, { FlowSection } from "@/components/ui/story-scroll";
 import TrueFocus from "@/components/ui/TrueFocus";
+import { Linkedin, Github, Twitter, Mail, Phone } from "lucide-react";
 
 // Dynamic imports — disable SSR for WebGL/canvas components
 const Beams = dynamic(() => import("@/components/ui/Beams"), { ssr: false });
@@ -97,12 +98,11 @@ function ScrollHint({ color = "rgba(255,255,255,0.35)" }: { color?: string }) {
 //  05 Contact— charcoal-black
 
 const contact = [
-  { n: "01", l: "LinkedIn — /in/bhasitgupta ↗", h: "https://www.linkedin.com/in/bhasitgupta" },
-  { n: "02", l: "GitHub — @bhasitgupta ↗", h: "https://github.com/bhasitgupta" },
-  { n: "03", l: "Twitter / X — @Bhasit1009 ↗", h: "https://twitter.com/Bhasit1009" },
-  { n: "04", l: "Discord — mr_bhasit ↗", h: "https://discord.com/users/mr_bhasit" },
-  { n: "05", l: "Email — bhasitgupta@gmail.com ↗", h: "https://mail.google.com/mail/?view=cm&fs=1&to=bhasitgupta@gmail.com" },
-  { n: "06", l: "Phone — +91 7974169120 ↗", h: "tel:+917974169120" },
+  { n: "01", icon: <Linkedin size={18} />, l: "LinkedIn — /in/bhasitgupta" },
+  { n: "02", icon: <Github size={18} />, l: "GitHub — @bhasitgupta" },
+  { n: "03", icon: <Twitter size={18} />, l: "Twitter / X — @Bhasit1009" },
+  { n: "04", icon: <Mail size={18} />, l: "Email — bhasitgupta@gmail.com" },
+  { n: "05", icon: <Phone size={18} />, l: "Phone — +91 7974169120" },
 ];
 
 export function PortfolioFlow() {
@@ -338,27 +338,25 @@ export function PortfolioFlow() {
           <Divider color="rgba(255,255,255,0.06)" />
 
           <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-            {contact.map(({ n, l, h }) => (
-              <a
+            {contact.map(({ n, icon, l }) => (
+              <div
                 key={n}
-                href={h}
-                target={h.startsWith("http") ? "_blank" : "_self"}
-                rel="noopener noreferrer"
                 style={{
                   display: "flex", alignItems: "center", gap: "1.25rem",
-                  padding: "1.1rem 0",
+                  padding: "1.2rem 0",
                   borderBottom: "1px solid rgba(255,255,255,0.06)",
-                  textDecoration: "none", color: "rgba(238,234,228,0.6)",
+                  color: "rgba(238,234,228,0.8)",
                   fontSize: "clamp(0.9rem, 1.5vw, 1.15rem)",
-                  fontFamily: "Outfit, sans-serif", fontWeight: 600,
-                  transition: "color 0.2s",
+                  fontFamily: "Outfit, sans-serif", fontWeight: 400,
+                  transition: "background 0.2s",
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#7c6af7")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(238,234,228,0.6)")}
               >
                 <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.65rem", color: "#7c6af7", letterSpacing: "0.2em", flexShrink: 0 }}>{n} //</span>
-                {l}
-              </a>
+                <span style={{ display: "flex", alignItems: "center", color: "#4fc9fa" }}>
+                  {icon}
+                </span>
+                <span style={{ letterSpacing: "0.02em" }}>{l}</span>
+              </div>
             ))}
           </div>
 
