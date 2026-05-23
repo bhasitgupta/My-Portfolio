@@ -393,8 +393,8 @@ export function PortfolioFlow() {
 
           <div style={{ display: "flex", flexWrap: "wrap", gap: "3rem" }}>
             {[
-              { n: "01", title: "Batman", desc: "Enterprise Next.js dashboard platform featuring a highly polished, high-density futuristic UI/UX.", link: "https://github.com/bhasitgupta/Glitchless" },
-              { n: "02", title: "Developer Portfolio", desc: "High-end cinematic AI portfolio built with Next.js, GSAP, Three.js, and immersive sound engineering.", link: "https://github.com/bhasitgupta/My-Portfolio" },
+              { n: "01", title: "Batman", desc: "Enterprise Next.js dashboard platform featuring a highly polished, high-density futuristic UI/UX.", link: "https://github.com/bhasitgupta/Batman" },
+              { n: "02", title: "Glitchless", desc: "High-performance enterprise SaaS application featuring advanced AI workflows and seamless, futuristic UI/UX.", link: "https://github.com/bhasitgupta/Glitchless" },
               { n: "03", title: "AI Anxiety Detector", desc: "Machine learning model built with Python to analyze and detect anxiety patterns using artificial intelligence.", link: "https://github.com/bhasitgupta/Bhasit-Gupta-Ai-Anxiety-Detector" },
             ].map(({ n, title, desc, link }) => (
               <a 
