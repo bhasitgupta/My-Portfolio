@@ -103,7 +103,7 @@ const contact = [
   { n: "01", icon: <LinkedinIcon size={28} />, href: "https://linkedin.com/in/bhasitgupta" },
   { n: "02", icon: <GithubIcon size={28} />, href: "https://github.com/bhasitgupta" },
   { n: "03", icon: <TwitterIcon size={28} />, href: "https://x.com/Bhasit1009" },
-  { n: "04", icon: <Mail size={28} />, href: "mailto:bhasitgupta@gmail.com", text: "bhasitgupta@gmail.com" },
+  { n: "04", icon: <Mail size={28} />, href: "https://mail.google.com/mail/?view=cm&fs=1&to=bhasitgupta@gmail.com", text: "bhasitgupta@gmail.com" },
   { n: "05", icon: <Phone size={28} />, href: "tel:+917974169120", text: "+91 7974169120" },
 ];
 
