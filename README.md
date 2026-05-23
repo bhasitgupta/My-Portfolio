@@ -1,36 +1,128 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Bhasit Gupta — Developer Portfolio
 
-## Getting Started
+> **Premium Futuristic Developer Portfolio** built with Next.js 15+, Three.js, GSAP, Framer Motion & Lenis JS
 
-First, run the development server:
+![Portfolio Preview](./public/preview.png)
+
+## ✨ Features
+
+- 🌐 **Fullscreen Hero** with Three.js holographic 3D scene
+- 🤖 **AI Loading Screen** with animated progress & holographic rings
+- 🎮 **Custom Cursor** with smooth lag ring
+- 📜 **Lenis Smooth Scrolling** at 60 FPS
+- 🎬 **Framer Motion** animations on every section
+- 🌗 **Dark / Light Theme** with smooth transitions
+- 🖥️ **Animated Terminal** section
+- 💼 **Projects** with filterable grid & modal popup
+- ⏱️ **Timeline** for experience & achievements
+- 📬 **Contact Form** with FastAPI backend
+- 📱 **Fully Responsive** on all devices
+
+## 🛠️ Tech Stack
+
+| Layer | Tech |
+|---|---|
+| Framework | Next.js 16 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS v4 + Custom CSS |
+| 3D | Three.js + React Three Fiber |
+| Animations | Framer Motion + Lenis JS |
+| Icons | Custom SVGs + Lucide React |
+| Backend | Python FastAPI |
+| Deploy (FE) | Vercel |
+| Deploy (BE) | Railway / Render |
+
+## 🚀 Quick Start
+
+### Frontend
 
 ```bash
+cd portfolio-site
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Backend
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+cd portfolio-site/backend
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
+```
 
-## Learn More
+Open [http://localhost:8000/docs](http://localhost:8000/docs) for Swagger UI
 
-To learn more about Next.js, take a look at the following resources:
+## 📁 Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+portfolio-site/
+├── app/
+│   ├── globals.css        # Design system + animations
+│   ├── layout.tsx         # Root layout with providers
+│   └── page.tsx           # Main page assembly
+├── components/
+│   ├── icons/             # Custom SVG icons
+│   ├── Navbar.tsx         # Sticky navigation
+│   ├── LoadingScreen.tsx  # AI hologram loader
+│   ├── CustomCursor.tsx   # Neon cursor
+│   ├── HeroSection.tsx    # Hero with 3D scene
+│   ├── HeroScene.tsx      # Three.js 3D scene
+│   ├── AboutSection.tsx   # Bio + stats
+│   ├── SkillsSection.tsx  # Tech stack showcase
+│   ├── ProjectsSection.tsx # Project cards + modals
+│   ├── ExperienceSection.tsx # Timeline
+│   ├── TerminalSection.tsx # Animated terminal
+│   ├── ContactSection.tsx # Contact form + socials
+│   ├── Footer.tsx         # Footer
+│   ├── ThemeProvider.tsx  # Dark/Light theme
+│   └── LenisProvider.tsx  # Smooth scroll
+├── backend/
+│   ├── main.py            # FastAPI app
+│   └── requirements.txt   # Python deps
+└── lib/
+    └── utils.ts           # Utility functions
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🎨 Design System
 
-## Deploy on Vercel
+- **Colors**: Cyberpunk palette — Cyan `#00f5ff`, Purple `#8b5cf6`, Pink `#ec4899`
+- **Fonts**: Orbitron (display) + Inter (body) + JetBrains Mono (code)
+- **Effects**: Glassmorphism, Neon glow, Grid overlay, Scanlines, Holographic scan
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🔧 Environment Variables
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Copy `.env.example` to `.env`:
+
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:8000
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your@gmail.com
+SMTP_PASS=your_app_password
+PORTFOLIO_EMAIL=bhasitgupta@email.com
+```
+
+## 🚢 Deployment
+
+### Frontend → Vercel
+```bash
+vercel --prod
+```
+
+### Backend → Railway
+1. Connect GitHub repo
+2. Set root directory to `portfolio-site/backend`
+3. Add environment variables
+4. Deploy!
+
+## 📬 Contact
+
+- **GitHub**: [@bhasitgupta](https://github.com/bhasitgupta)
+- **LinkedIn**: [bhasitgupta](https://linkedin.com/in/bhasitgupta)
+- **Twitter**: [@Bhasit1009](https://twitter.com/Bhasit1009)
+
+---
+
+Made with ❤️ by Bhasit Gupta
