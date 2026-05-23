@@ -338,18 +338,34 @@ export function PortfolioFlow() {
 
           <Divider color="rgba(255,255,255,0.06)" />
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+          <div style={{ 
+            display: "grid", 
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", 
+            gap: "1.25rem" 
+          }}>
             {contact.map(({ n, icon, l }) => (
               <div
                 key={n}
                 style={{
                   display: "flex", alignItems: "center", gap: "1.25rem",
-                  padding: "1.2rem 0",
-                  borderBottom: "1px solid rgba(255,255,255,0.06)",
+                  padding: "1.5rem",
+                  backgroundColor: "rgba(255,255,255,0.02)",
+                  border: "1px solid rgba(255,255,255,0.05)",
+                  borderRadius: "12px",
                   color: "rgba(238,234,228,0.8)",
-                  fontSize: "clamp(0.9rem, 1.5vw, 1.15rem)",
+                  fontSize: "clamp(0.9rem, 1vw, 1.05rem)",
                   fontFamily: "Outfit, sans-serif", fontWeight: 400,
-                  transition: "background 0.2s",
+                  transition: "all 0.3s ease",
+                }}
+                onMouseEnter={(e) => { 
+                  e.currentTarget.style.backgroundColor = "rgba(124,106,247,0.05)"; 
+                  e.currentTarget.style.borderColor = "rgba(124,106,247,0.3)"; 
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                }}
+                onMouseLeave={(e) => { 
+                  e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.02)"; 
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.05)"; 
+                  e.currentTarget.style.transform = "translateY(0)";
                 }}
               >
                 <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.65rem", color: "#7c6af7", letterSpacing: "0.2em", flexShrink: 0 }}>{n} //</span>
