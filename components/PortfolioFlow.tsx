@@ -303,7 +303,7 @@ export function PortfolioFlow() {
 
           <div style={{ display: "flex", flexWrap: "wrap", gap: "3rem" }}>
             {[
-              { n: "01", title: "Draftdeckai", desc: "Open-source AI document platform. Transforms natural language ideas into polished resumes, presentations, and CVs.", link: "https://github.com/bhasitgupta/Draftdeckai" },
+              { n: "01", title: "Python Assignment", desc: "Comprehensive Python programming project demonstrating backend logic, scripting, and data structure implementations.", link: "https://github.com/bhasitgupta/python-assignment" },
               { n: "02", title: "Glitchless", desc: "High-density enterprise SaaS platform with a highly polished, futuristic Next.js interface and dashboard.", link: "https://github.com/bhasitgupta/Glitchless" },
               { n: "03", title: "AI Anxiety Detector", desc: "Machine learning model built with Python to analyze and detect anxiety patterns using artificial intelligence.", link: "https://github.com/bhasitgupta/Bhasit-Gupta-Ai-Anxiety-Detector" },
             ].map(({ n, title, desc, link }) => (
