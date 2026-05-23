@@ -255,7 +255,7 @@ export function Loader({ onComplete }: { onComplete: (audio: boolean) => void })
           
           <div style={{ display: "flex", gap: "4rem" }}>
             <button 
-              onClick={() => { choiceRef.current = true; setShowPrompt(false); tlRef.current?.resume(); }}
+              onClick={() => { onComplete(true); }}
               style={{ background: "transparent", border: "none", color: "#fff", fontFamily: "inherit", fontSize: "1.2rem", cursor: "pointer", letterSpacing: "0.2em", fontWeight: 700, outline: "none" }}
               onMouseEnter={(e) => e.currentTarget.style.color = "#ff5500"}
               onMouseLeave={(e) => e.currentTarget.style.color = "#fff"}
@@ -263,7 +263,7 @@ export function Loader({ onComplete }: { onComplete: (audio: boolean) => void })
               [ Y ] YES
             </button>
             <button 
-              onClick={() => { choiceRef.current = false; setShowPrompt(false); tlRef.current?.resume(); }}
+              onClick={() => { onComplete(false); }}
               style={{ background: "transparent", border: "none", color: "rgba(255,255,255,0.5)", fontFamily: "inherit", fontSize: "1.2rem", cursor: "pointer", letterSpacing: "0.2em", fontWeight: 700, outline: "none" }}
               onMouseEnter={(e) => e.currentTarget.style.color = "#fff"}
               onMouseLeave={(e) => e.currentTarget.style.color = "rgba(255,255,255,0.5)"}
