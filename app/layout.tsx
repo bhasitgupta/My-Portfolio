@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { LenisProvider } from "@/components/LenisProvider";
-import { CustomCursor } from "@/components/CustomCursor";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://bhasitportfolio.vercel.app"),
@@ -22,7 +21,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ThemeProvider>
           <LenisProvider>
-            <CustomCursor />
             {children}
           </LenisProvider>
         </ThemeProvider>
