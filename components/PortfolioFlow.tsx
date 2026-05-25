@@ -85,44 +85,32 @@ export function PortfolioFlow() {
   const [activeSection, setActiveSection] = useState("hero");
   const [loading, setLoading] = useState(true);
   const [playing, setPlaying] = useState(false);
+  const [showMusicPrompt, setShowMusicPrompt] = useState(false);
+  const [promptVisible, setPromptVisible] = useState(false); // controls CSS opacity for fade-in
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    // Instantiate background audio loop on client side mount
+    // Instantiate background audio loop on client side mount — no auto-play
     const audio = new Audio("/background.mp3");
     audio.loop = true;
-    audio.volume = 0.45; // Smooth, premium background level
+    audio.volume = 0.45;
     audioRef.current = audio;
-
-    // Auto-play on first user interaction (browsers block audio without gesture)
-    const tryAutoPlay = () => {
-      if (!audioRef.current || playing) return;
-      audioRef.current.play().then(() => {
-        setPlaying(true);
-      }).catch(() => {
-        // Silently fail — user can always click the pill bar button
-      });
-      // Remove listeners after first successful trigger
-      window.removeEventListener("scroll", tryAutoPlay);
-      window.removeEventListener("click", tryAutoPlay);
-      window.removeEventListener("touchstart", tryAutoPlay);
-      window.removeEventListener("keydown", tryAutoPlay);
-    };
-
-    window.addEventListener("scroll", tryAutoPlay, { passive: true, once: true });
-    window.addEventListener("click", tryAutoPlay, { once: true });
-    window.addEventListener("touchstart", tryAutoPlay, { passive: true, once: true });
-    window.addEventListener("keydown", tryAutoPlay, { once: true });
-
-    return () => {
-      audio.pause();
-      window.removeEventListener("scroll", tryAutoPlay);
-      window.removeEventListener("click", tryAutoPlay);
-      window.removeEventListener("touchstart", tryAutoPlay);
-      window.removeEventListener("keydown", tryAutoPlay);
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => { audio.pause(); };
   }, []);
+
+  // Music prompt YES handler
+  const handleMusicYes = () => {
+    setPromptVisible(false);
+    setTimeout(() => setShowMusicPrompt(false), 600);
+    if (!audioRef.current) return;
+    audioRef.current.play().then(() => setPlaying(true)).catch(() => {});
+  };
+
+  // Music prompt NO handler
+  const handleMusicNo = () => {
+    setPromptVisible(false);
+    setTimeout(() => setShowMusicPrompt(false), 600);
+  };
 
   const toggleMusic = () => {
     if (!audioRef.current) return;
@@ -175,7 +163,12 @@ export function PortfolioFlow() {
             ease: "power4.inOut",
             onComplete: () => {
               setLoading(false);
-              // Force window scroll back to very top so user sees Curated Journey first
+              // Show music prompt after a short breath
+              setTimeout(() => {
+                setShowMusicPrompt(true);
+                // Small delay so the DOM is mounted before we fade in
+                requestAnimationFrame(() => requestAnimationFrame(() => setPromptVisible(true)));
+              }, 300);
               window.scrollTo(0, 0);
               ScrollTrigger.refresh();
             },
@@ -476,6 +469,173 @@ export function PortfolioFlow() {
             </p>
             <span style={{ display: "block", marginTop: "0.75rem", fontFamily: "JetBrains Mono, monospace", fontSize: "0.6rem", letterSpacing: "0.22em", color: "var(--accent)", opacity: 0.5 }}>
               禅 — SHIN-ON (HEART SOUND)
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* ─── Music Consent Overlay ─── */}
+      {showMusicPrompt && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Music preference"
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 9999,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "var(--bg)",
+            opacity: promptVisible ? 1 : 0,
+            transition: "opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
+            pointerEvents: promptVisible ? "auto" : "none",
+          }}
+        >
+          {/* Ambient glow */}
+          <div style={{
+            position: "absolute",
+            top: "30%", left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "60vw", height: "60vw",
+            background: "radial-gradient(circle, var(--accent-glow) 0%, transparent 65%)",
+            pointerEvents: "none",
+          }} />
+
+          {/* Content */}
+          <div style={{
+            position: "relative", zIndex: 1,
+            display: "flex", flexDirection: "column",
+            alignItems: "center", gap: "3rem",
+            textAlign: "center", padding: "0 2rem",
+          }}>
+            {/* Animated sound wave */}
+            <div style={{ display: "flex", alignItems: "flex-end", gap: "5px", height: "36px" }}>
+              {[0, 0.15, 0.08, 0.22, 0.05].map((delay, i) => (
+                <div key={i} style={{
+                  width: "3px", borderRadius: "3px",
+                  background: "var(--accent)", opacity: 0.6,
+                  animation: `bbar 0.8s ease-in-out infinite`,
+                  animationDelay: `${delay}s`,
+                }} />
+              ))}
+            </div>
+
+            {/* Heading */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              <span style={{
+                fontFamily: "JetBrains Mono, monospace",
+                fontSize: "0.65rem",
+                letterSpacing: "0.4em",
+                textTransform: "uppercase",
+                color: "var(--text-3)",
+              }}>
+                AMBIENT SOUNDTRACK
+              </span>
+              <h2 style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: "clamp(2.8rem, 6vw, 5rem)",
+                fontWeight: 400,
+                lineHeight: 1.0,
+                letterSpacing: "-0.02em",
+                color: "var(--text)",
+                margin: 0,
+              }}>
+                Play music?
+              </h2>
+              <p style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontStyle: "italic",
+                fontSize: "clamp(0.9rem, 1.4vw, 1.05rem)",
+                color: "var(--text-2)",
+                lineHeight: 1.7,
+                margin: 0,
+                maxWidth: "32ch",
+              }}>
+                An ambient score composed for this experience.
+              </p>
+            </div>
+
+            {/* YES / NO buttons */}
+            <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+              {/* YES */}
+              <button
+                onClick={handleMusicYes}
+                aria-label="Yes, play music"
+                style={{
+                  fontFamily: "JetBrains Mono, monospace",
+                  fontSize: "0.78rem",
+                  letterSpacing: "0.3em",
+                  textTransform: "uppercase",
+                  padding: "0.9rem 2.8rem",
+                  borderRadius: "100px",
+                  border: "1px solid var(--accent)",
+                  background: "var(--accent)",
+                  color: "var(--bg)",
+                  cursor: "pointer",
+                  transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+                  display: "flex", alignItems: "center", gap: "0.65rem",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.opacity = "0.85";
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
+                  (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 24px var(--accent-glow)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.opacity = "1";
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                  (e.currentTarget as HTMLElement).style.boxShadow = "none";
+                }}
+              >
+                <Volume2 size={14} />
+                YES
+              </button>
+
+              {/* NO */}
+              <button
+                onClick={handleMusicNo}
+                aria-label="No, skip music"
+                style={{
+                  fontFamily: "JetBrains Mono, monospace",
+                  fontSize: "0.78rem",
+                  letterSpacing: "0.3em",
+                  textTransform: "uppercase",
+                  padding: "0.9rem 2.8rem",
+                  borderRadius: "100px",
+                  border: "1px solid var(--border)",
+                  background: "transparent",
+                  color: "var(--text-2)",
+                  cursor: "pointer",
+                  transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+                  display: "flex", alignItems: "center", gap: "0.65rem",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
+                  (e.currentTarget as HTMLElement).style.color = "var(--text)";
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
+                  (e.currentTarget as HTMLElement).style.color = "var(--text-2)";
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                }}
+              >
+                <VolumeX size={14} />
+                NO
+              </button>
+            </div>
+
+            {/* Fine print */}
+            <span style={{
+              fontFamily: "JetBrains Mono, monospace",
+              fontSize: "0.58rem",
+              letterSpacing: "0.18em",
+              color: "var(--text-3)",
+              opacity: 0.55,
+            }}>
+              YOU CAN TOGGLE AT ANY TIME ↘
             </span>
           </div>
         </div>
