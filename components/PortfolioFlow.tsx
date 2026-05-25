@@ -168,8 +168,9 @@ export function PortfolioFlow() {
   useEffect(() => {
     if (!introContainerRef.current) return;
 
-    // Register ScrollTrigger safely
-    gsap.registerPlugin(ScrollTrigger);
+    // ScrollTrigger already registered in LenisProvider — no need to re-register
+    // Respect prefers-reduced-motion: skip heavy GSAP scroll animations
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const ctx = gsap.context(() => {
       // Create pinned ScrollTrigger timeline
@@ -184,6 +185,7 @@ export function PortfolioFlow() {
         }
       });
 
+      if (!prefersReducedMotion) {
       // 1. Section 1 header splits apart vertically, and fades out. Description fades down and out.
       tl.to(line1Ref.current, { yPercent: -100, opacity: 0, duration: 1.2, ease: "power2.inOut" }, 0);
       tl.to(line2Ref.current, { yPercent: 100, opacity: 0, duration: 1.2, ease: "power2.inOut" }, 0);
@@ -221,6 +223,7 @@ export function PortfolioFlow() {
         tl.to(sec2StackRef.current, { y: "-120vh", duration: 1.5, ease: "power2.in" }, 6.8);
         tl.to(words[3], { opacity: 0.15, duration: 1.5, ease: "power2.in" }, 6.8);
       }
+      } // end !prefersReducedMotion
 
       // 3. Fade in map bar as Section 2 finishes exiting (integrated into main timeline)
       if (mapBarRef.current) {
@@ -522,6 +525,8 @@ export function PortfolioFlow() {
               ref={mapleRef}
               src="/greenery/maple.png" 
               alt="" 
+              aria-hidden="true"
+              role="presentation"
               style={{ 
                 position: "absolute", 
                 top: 0, 
@@ -533,8 +538,7 @@ export function PortfolioFlow() {
                 opacity: 0.65, // Translucent washi paper aesthetic
                 mixBlendMode: "normal", // Flawless natural blending on clean transparent PNG
                 maskImage: "radial-gradient(circle at 55% 45%, black 60%, transparent 95%)",
-                WebkitMaskImage: "radial-gradient(circle at 55% 45%, black 60%, transparent 95%)", // Feathers edges beautifully
-                willChange: "transform"
+                WebkitMaskImage: "radial-gradient(circle at 55% 45%, black 60%, transparent 95%)",
               }} 
             />
             <div 
@@ -651,8 +655,10 @@ export function PortfolioFlow() {
       {/* ═══════════════════════════════════════════════════
           PERSISTENT LEFT-HAND MAP BAR (Borderless Navigation)
       ═══════════════════════════════════════════════════ */}
-      <div 
+      <nav
         ref={mapBarRef}
+        aria-label="Section navigation"
+        className="map-bar-mobile-hide"
         style={{ 
           position: "fixed", 
           left: "clamp(1.25rem, 3.5vw, 2.5rem)", 
@@ -701,7 +707,7 @@ export function PortfolioFlow() {
           );
         })}
 
-      </div>
+      </nav>
 
       {/* ═══════════════════════════════════════════════════
           01 HERO — Editorial Monochrome Awwwards Style
@@ -742,6 +748,8 @@ export function PortfolioFlow() {
             ref={potRef}
             src="/greenery/pot.png" 
             alt="" 
+            aria-hidden="true"
+            role="presentation"
             style={{ 
               position: "absolute", 
               top: "20%", 
@@ -751,10 +759,9 @@ export function PortfolioFlow() {
               pointerEvents: "none", 
               zIndex: 4, // Foreground layer placement
               opacity: 0.9,
-              mixBlendMode: "normal", // Flawless natural blending on clean transparent PNG
+              mixBlendMode: "normal",
               maskImage: "linear-gradient(to bottom, black 65%, transparent 98%)",
-              WebkitMaskImage: "linear-gradient(to bottom, black 65%, transparent 98%)", // Soft transition to transparent at bottom
-              willChange: "transform"
+              WebkitMaskImage: "linear-gradient(to bottom, black 65%, transparent 98%)",
             }} 
           />
 
@@ -853,8 +860,8 @@ export function PortfolioFlow() {
             Creative Technologist
           </div>
 
-          {/* Typographic Columns */}
-          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "clamp(6rem, 24vw, 26rem)", overflow: "hidden", pointerEvents: "none" }}>
+          {/* Typographic Columns — hidden on mobile to prevent horizontal overflow */}
+          <div className="hero-type-columns" style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "clamp(6rem, 24vw, 26rem)", overflow: "hidden", pointerEvents: "none" }}>
             
             <div style={{ display: "flex", flexDirection: "row", gap: "2.5rem", alignItems: "flex-start", zIndex: 3 }}>
               
@@ -944,6 +951,8 @@ export function PortfolioFlow() {
           ref={mossRef}
           src="/greenery/moss.png" 
           alt="" 
+          aria-hidden="true"
+          role="presentation"
           style={{ 
             position: "absolute", 
             bottom: "2rem", 
@@ -951,12 +960,11 @@ export function PortfolioFlow() {
             width: "clamp(180px, 25vw, 260px)", 
             height: "auto", 
             pointerEvents: "none", 
-            zIndex: 4, // Higher foreground placement sits in front of card overlapping beautifully
+            zIndex: 4,
             opacity: 0.9,
-            mixBlendMode: "normal", // Flawless natural blending on clean transparent PNG
+            mixBlendMode: "normal",
             maskImage: "radial-gradient(circle at center, black 70%, transparent 98%)",
-            WebkitMaskImage: "radial-gradient(circle at center, black 70%, transparent 98%)", // Gently softens organic mist edges
-            willChange: "transform"
+            WebkitMaskImage: "radial-gradient(circle at center, black 70%, transparent 98%)",
           }} 
         />
         
@@ -1097,6 +1105,8 @@ export function PortfolioFlow() {
           ref={bambooRef}
           src="/greenery/bamboo.png" 
           alt="" 
+          aria-hidden="true"
+          role="presentation"
           style={{ 
             position: "absolute", 
             top: "25%", 
@@ -1104,12 +1114,11 @@ export function PortfolioFlow() {
             width: "clamp(150px, 20vw, 220px)", 
             height: "auto", 
             pointerEvents: "none", 
-            zIndex: 4, // Placed proudly on top of card
+            zIndex: 4,
             opacity: 0.85,
-            mixBlendMode: "normal", // Flawless natural blending on clean transparent PNG
+            mixBlendMode: "normal",
             maskImage: "linear-gradient(to bottom, black 70%, transparent 96%)",
-            WebkitMaskImage: "linear-gradient(to bottom, black 70%, transparent 96%)", // Beautifully feathers stalk fadeout
-            willChange: "transform"
+            WebkitMaskImage: "linear-gradient(to bottom, black 70%, transparent 96%)",
           }} 
         />
         
@@ -1188,7 +1197,7 @@ export function PortfolioFlow() {
             <Divider color="var(--border)" />
           </div>
 
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "3rem" }}>
+          <div className="project-cards-wrap" style={{ display: "flex", flexWrap: "wrap", gap: "3rem" }}>
             {[
               { n: "01", title: "Batman", desc: "Enterprise Next.js dashboard platform featuring a highly polished, high-density futuristic UI/UX.", link: "https://github.com/bhasitgupta/Batman" },
               { n: "02", title: "Glitchless", desc: "High-performance enterprise SaaS application featuring advanced AI workflows and seamless, futuristic UI/UX.", link: "https://github.com/bhasitgupta/Glitchless" },
@@ -1199,9 +1208,10 @@ export function PortfolioFlow() {
                 href={link} 
                 target="_blank" 
                 rel="noopener noreferrer" 
+                aria-label={`View ${title} on GitHub`}
                 className="card reveal-card"
                 style={{ 
-                  flex: "1 1 240px", 
+                  flex: "1 1 min(240px, 100%)",
                   textDecoration: "none",
                   display: "flex",
                   flexDirection: "column"
@@ -1269,6 +1279,7 @@ export function PortfolioFlow() {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={text ? `Send email to ${text}` : `Contact link ${n}`}
                     className="contact-link"
                     style={{
                       display: "flex",
@@ -1291,30 +1302,33 @@ export function PortfolioFlow() {
 
               {/* Row 2: Social Links */}
               <div className="reveal-detail" style={{ display: "flex", gap: "2rem", flexWrap: "wrap" }}>
-                {contact.filter(c => !c.text).map(({ n, icon, href, text }) => (
+                {contact.filter(c => !c.text).map(({ n, icon, href }) => {
+                  const labels: Record<string, string> = { "01": "LinkedIn", "02": "GitHub", "03": "Twitter / X" };
+                  return (
                   <a
                     key={n}
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={`Visit ${labels[n] || "social profile"}`}
                     className="contact-link"
                     style={{
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       gap: "0.75rem",
-                      width: text ? "auto" : "70px", 
+                      width: "70px", 
                       height: "70px",
-                      padding: text ? "0 2rem" : "0",
+                      padding: "0",
                       fontFamily: "Outfit, sans-serif",
                       fontSize: "1.1rem",
                       textDecoration: "none"
                     }}
                   >
                     {icon}
-                    {text && <span>{text}</span>}
                   </a>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
@@ -1324,7 +1338,7 @@ export function PortfolioFlow() {
 
             <div className="reveal-detail">
               <p style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.7rem", color: "var(--text-3)", letterSpacing: "0.12em" }}>
-                © 2026 BHASIT GUPTA — DESIGNED &amp; BUILT WITH ♥
+                © 2026 BHASIT GUPTA — DESIGNED & BUILT WITH ♥
               </p>
             </div>
           </div>
@@ -1333,7 +1347,10 @@ export function PortfolioFlow() {
     </FlowArt>
 
     {/* Floating Serenity Theme & Sound Control Pill-Bar (Bottom-Right) */}
-    <div 
+    <div
+      role="toolbar"
+      aria-label="Theme and sound controls"
+      className="pill-bar-fixed"
       style={{
         position: "fixed",
         bottom: "2rem",
@@ -1349,8 +1366,7 @@ export function PortfolioFlow() {
         WebkitBackdropFilter: "blur(24px) saturate(120%)",
         border: "1px solid var(--border)",
         boxShadow: "var(--glass-specular)",
-        transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-        willChange: "transform"
+        transition: "border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
       }}
       onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent)"; }}
       onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border)"; }}

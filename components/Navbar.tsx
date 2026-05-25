@@ -8,19 +8,23 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
+    // passive: true prevents scroll jank
     const fn = () => setScrolled(window.scrollY > 80);
-    window.addEventListener("scroll", fn);
+    window.addEventListener("scroll", fn, { passive: true });
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
   return (
     <header
+      role="banner"
       style={{
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 200,
         padding: scrolled ? "1rem 0" : "1.5rem 0",
-        background: scrolled ? "rgba(13,13,18,0.92)" : "transparent",
+        // Use CSS variable for background — theme-aware
+        background: scrolled ? "var(--nav-bg)" : "transparent",
         backdropFilter: scrolled ? "blur(16px)" : "none",
-        borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "none",
+        WebkitBackdropFilter: scrolled ? "blur(16px)" : "none",
+        borderBottom: scrolled ? "1px solid var(--border)" : "none",
         transition: "all 0.4s ease",
       }}
     >
@@ -29,19 +33,26 @@ export function Navbar() {
         style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
       >
         {/* Logo */}
-        <span
+        <a
+          href="#hero"
+          aria-label="Bhasit Gupta — back to top"
           style={{
             fontFamily: "JetBrains Mono, monospace",
             fontSize: "0.85rem", fontWeight: 700,
             letterSpacing: "0.3em", textTransform: "uppercase",
-            color: "#eeeae4",
+            // Use CSS variable — theme-aware
+            color: "var(--text)",
+            textDecoration: "none",
           }}
         >
           BG
-        </span>
+        </a>
 
         {/* Nav links */}
-        <nav style={{ display: "flex", alignItems: "center", gap: "2.5rem" }}>
+        <nav
+          aria-label="Primary navigation"
+          style={{ display: "flex", alignItems: "center", gap: "2.5rem" }}
+        >
           {[
             { label: "About", id: "About" },
             { label: "Skills", id: "Skills" },
@@ -50,36 +61,47 @@ export function Navbar() {
           ].map((l) => (
             <button
               key={l.id}
-              onClick={() => document.querySelector(`[aria-label="${l.id}"]`)?.scrollIntoView({ behavior: "smooth" })}
+              onClick={() =>
+                document.querySelector(`[aria-label="${l.id}"]`)?.scrollIntoView({ behavior: "smooth" })
+              }
+              aria-label={`Navigate to ${l.label} section`}
               style={{
                 fontFamily: "JetBrains Mono, monospace",
                 fontSize: "0.72rem", letterSpacing: "0.15em",
                 textTransform: "uppercase", background: "none",
-                border: "none", cursor: "pointer", color: "rgba(238,234,228,0.55)",
+                border: "none", cursor: "pointer",
+                // Use CSS variable — theme-aware
+                color: "var(--text-2)",
                 transition: "color 0.2s",
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#eeeae4")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(238,234,228,0.55)")}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-2)")}
             >
               {l.label}
             </button>
           ))}
         </nav>
 
-        {/* Right */}
+        {/* Right controls */}
         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
           <button
             onClick={toggle}
             style={{
               width: 34, height: 34, borderRadius: "50%", display: "flex",
               alignItems: "center", justifyContent: "center",
-              border: "1px solid rgba(255,255,255,0.12)",
+              border: "1px solid var(--border)",
               background: "transparent", cursor: "pointer",
-              color: "rgba(238,234,228,0.6)", transition: "all 0.2s",
+              color: "var(--text-2)", transition: "all 0.2s",
             }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "#a78bfa"; (e.currentTarget as HTMLElement).style.color = "#a78bfa"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.12)"; (e.currentTarget as HTMLElement).style.color = "rgba(238,234,228,0.6)"; }}
-            aria-label="Toggle theme"
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
+              (e.currentTarget as HTMLElement).style.color = "var(--accent)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
+              (e.currentTarget as HTMLElement).style.color = "var(--text-2)";
+            }}
+            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
           >
             {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
           </button>
@@ -87,16 +109,24 @@ export function Navbar() {
           <a
             href="/resume.pdf"
             target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open resume PDF in new tab"
             style={{
               fontFamily: "JetBrains Mono, monospace",
               fontSize: "0.72rem", letterSpacing: "0.15em",
               textTransform: "uppercase", padding: "0.5rem 1.2rem",
-              borderRadius: 100, border: "1px solid rgba(167,139,250,0.4)",
-              color: "#a78bfa", textDecoration: "none",
+              borderRadius: 100, border: "1px solid var(--border)",
+              color: "var(--text)", textDecoration: "none",
               transition: "all 0.2s",
             }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(167,139,250,0.12)"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "transparent"; }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.background = "var(--surface-hover)";
+              (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.background = "transparent";
+              (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
+            }}
           >
             Resume ↗
           </a>
