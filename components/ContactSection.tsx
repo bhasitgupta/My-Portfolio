@@ -38,13 +38,6 @@ const LINKS = [
     href: "mailto:bhasitgupta@gmail.com",
     icon: "@",
   },
-  {
-    num: "06",
-    label: "Phone / WhatsApp",
-    sub: "+91 7974169120",
-    href: "tel:+917974169120",
-    icon: "☎",
-  },
 ];
 
 export function ContactSection() {
