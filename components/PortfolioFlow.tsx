@@ -1060,7 +1060,7 @@ export function PortfolioFlow() {
           </div>
 
           {/* Typographic Columns — hidden on mobile to prevent horizontal overflow */}
-          <div className="hero-type-columns" style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "clamp(1rem, 6vw, 8rem)", overflow: "hidden", pointerEvents: "none" }}>
+          <div className="hero-type-columns" style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "clamp(6rem, 16vw, 18rem)", overflow: "hidden", pointerEvents: "none" }}>
             
             <div style={{ display: "flex", flexDirection: "row", gap: "2.5rem", alignItems: "flex-start", zIndex: 3 }}>
               
@@ -1099,7 +1099,7 @@ export function PortfolioFlow() {
               </div>
               
               {/* Gupta Column Group */}
-              <div style={{ display: "flex", flexDirection: "row", gap: "0.8rem", alignItems: "center", marginTop: "clamp(4rem, 10vw, 9rem)" }}>
+              <div style={{ display: "flex", flexDirection: "row", gap: "0.8rem", alignItems: "center", marginTop: "clamp(2rem, 5vw, 5rem)" }}>
                 <div 
                   style={{
                     fontFamily: "'Cormorant Garamond', serif",
