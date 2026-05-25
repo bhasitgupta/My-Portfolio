@@ -87,6 +87,7 @@ export function PortfolioFlow() {
   const [playing, setPlaying] = useState(false);
   const [showMusicPrompt, setShowMusicPrompt] = useState(false);
   const [promptVisible, setPromptVisible] = useState(false); // controls CSS opacity for fade-in
+  const [loaderContentVisible, setLoaderContentVisible] = useState(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -101,15 +102,38 @@ export function PortfolioFlow() {
   // Music prompt YES handler
   const handleMusicYes = () => {
     setPromptVisible(false);
-    setTimeout(() => setShowMusicPrompt(false), 600);
-    if (!audioRef.current) return;
-    audioRef.current.play().then(() => setPlaying(true)).catch(() => {});
+    if (audioRef.current) {
+      audioRef.current.play().then(() => setPlaying(true)).catch(() => {});
+    }
+    gsap.to(".loading-screen", {
+      opacity: 0,
+      y: "-100%",
+      duration: 1.4,
+      ease: "power4.inOut",
+      onComplete: () => {
+        setLoading(false);
+        setShowMusicPrompt(false);
+        window.scrollTo(0, 0);
+        ScrollTrigger.refresh();
+      },
+    });
   };
 
   // Music prompt NO handler
   const handleMusicNo = () => {
     setPromptVisible(false);
-    setTimeout(() => setShowMusicPrompt(false), 600);
+    gsap.to(".loading-screen", {
+      opacity: 0,
+      y: "-100%",
+      duration: 1.4,
+      ease: "power4.inOut",
+      onComplete: () => {
+        setLoading(false);
+        setShowMusicPrompt(false);
+        window.scrollTo(0, 0);
+        ScrollTrigger.refresh();
+      },
+    });
   };
 
   const toggleMusic = () => {
@@ -155,24 +179,13 @@ export function PortfolioFlow() {
         setProgress(100);
         clearInterval(timer);
         
+        // Transition loader contents out, then show music prompt
         setTimeout(() => {
-          gsap.to(".loading-screen", {
-            opacity: 0,
-            y: "-100%",
-            duration: 1.4,
-            ease: "power4.inOut",
-            onComplete: () => {
-              setLoading(false);
-              // Show music prompt after a short breath
-              setTimeout(() => {
-                setShowMusicPrompt(true);
-                // Small delay so the DOM is mounted before we fade in
-                requestAnimationFrame(() => requestAnimationFrame(() => setPromptVisible(true)));
-              }, 300);
-              window.scrollTo(0, 0);
-              ScrollTrigger.refresh();
-            },
-          });
+          setLoaderContentVisible(false);
+          setTimeout(() => {
+            setShowMusicPrompt(true);
+            requestAnimationFrame(() => requestAnimationFrame(() => setPromptVisible(true)));
+          }, 500);
         }, 350);
       } else {
         setProgress(Math.floor(start));
@@ -441,203 +454,203 @@ export function PortfolioFlow() {
             }} 
           />
           
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem", zIndex: 1, textAlign: "center" }}>
-            <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "0.72rem", letterSpacing: "0.38em", color: "var(--text-2)", opacity: 0.8 }}>
-              BHASIT GUPTA — PORTFOLIO
-            </span>
-          </div>
+          {/* Loader Contents (visible when showMusicPrompt is false) */}
+          {!showMusicPrompt && (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "2.5rem",
+                width: "100%",
+                opacity: loaderContentVisible ? 1 : 0,
+                transition: "opacity 0.5s ease-in-out",
+                zIndex: 1
+              }}
+            >
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem", textAlign: "center" }}>
+                <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "0.72rem", letterSpacing: "0.38em", color: "var(--text-2)", opacity: 0.8 }}>
+                  BHASIT GUPTA — PORTFOLIO
+                </span>
+              </div>
 
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem", zIndex: 1 }}>
-            <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(5rem, 10vw, 7.5rem)", fontWeight: 300, lineHeight: 1, letterSpacing: "-0.03em" }}>
-              {String(progress).padStart(3, "0")}
-            </span>
-            <div style={{ width: "220px", height: "1px", background: "var(--border)", position: "relative", overflow: "hidden" }}>
-              <div 
-                style={{ 
-                  height: "100%", 
-                  background: "var(--accent)", 
-                  width: `${progress}%`,
-                  transition: "width 0.08s ease-out"
-                }} 
-              />
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" }}>
+                <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(5rem, 10vw, 7.5rem)", fontWeight: 300, lineHeight: 1, letterSpacing: "-0.03em" }}>
+                  {String(progress).padStart(3, "0")}
+                </span>
+                <div style={{ width: "220px", height: "1px", background: "var(--border)", position: "relative", overflow: "hidden" }}>
+                  <div 
+                    style={{ 
+                      height: "100%", 
+                      background: "var(--accent)", 
+                      width: `${progress}%`,
+                      transition: "width 0.08s ease-out"
+                    }} 
+                  />
+                </div>
+              </div>
+
+              <div style={{ textAlign: "center", maxWidth: "440px", padding: "0 2rem" }}>
+                <p style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: "clamp(0.95rem, 1.5vw, 1.15rem)", color: "var(--text-2)", lineHeight: 1.65, margin: 0 }}>
+                  &ldquo;Find beauty in imperfection, and stillness in motion.&rdquo;
+                </p>
+                <span style={{ display: "block", marginTop: "0.75rem", fontFamily: "JetBrains Mono, monospace", fontSize: "0.6rem", letterSpacing: "0.22em", color: "var(--accent)", opacity: 0.5 }}>
+                  禅 — SHIN-ON (HEART SOUND)
+                </span>
+              </div>
             </div>
-          </div>
+          )}
 
-          <div style={{ textAlign: "center", maxWidth: "440px", padding: "0 2rem", zIndex: 1 }}>
-            <p style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: "clamp(0.95rem, 1.5vw, 1.15rem)", color: "var(--text-2)", lineHeight: 1.65, margin: 0 }}>
-              &ldquo;Find beauty in imperfection, and stillness in motion.&rdquo;
-            </p>
-            <span style={{ display: "block", marginTop: "0.75rem", fontFamily: "JetBrains Mono, monospace", fontSize: "0.6rem", letterSpacing: "0.22em", color: "var(--accent)", opacity: 0.5 }}>
-              禅 — SHIN-ON (HEART SOUND)
-            </span>
-          </div>
-        </div>
-      )}
+          {/* Music Consent Overlay inside loading screen */}
+          {showMusicPrompt && (
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-label="Music preference"
+              style={{
+                position: "relative",
+                zIndex: 1,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "3rem",
+                textAlign: "center",
+                padding: "0 2rem",
+                opacity: promptVisible ? 1 : 0,
+                transition: "opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
+                pointerEvents: promptVisible ? "auto" : "none",
+              }}
+            >
+              {/* Animated sound wave */}
+              <div style={{ display: "flex", alignItems: "flex-end", gap: "5px", height: "36px" }}>
+                {[0, 0.15, 0.08, 0.22, 0.05].map((delay, i) => (
+                  <div key={i} style={{
+                    width: "3px", borderRadius: "3px",
+                    background: "var(--accent)", opacity: 0.6,
+                    animation: `bbar 0.8s ease-in-out infinite`,
+                    animationDelay: `${delay}s`,
+                  }} />
+                ))}
+              </div>
 
-      {/* ─── Music Consent Overlay ─── */}
-      {showMusicPrompt && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label="Music preference"
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 9999,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            background: "var(--bg)",
-            opacity: promptVisible ? 1 : 0,
-            transition: "opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
-            pointerEvents: promptVisible ? "auto" : "none",
-          }}
-        >
-          {/* Ambient glow */}
-          <div style={{
-            position: "absolute",
-            top: "30%", left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "60vw", height: "60vw",
-            background: "radial-gradient(circle, var(--accent-glow) 0%, transparent 65%)",
-            pointerEvents: "none",
-          }} />
+              {/* Heading */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                <span style={{
+                  fontFamily: "JetBrains Mono, monospace",
+                  fontSize: "0.65rem",
+                  letterSpacing: "0.4em",
+                  textTransform: "uppercase",
+                  color: "var(--text-3)",
+                }}>
+                  AMBIENT SOUNDTRACK
+                </span>
+                <h2 style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: "clamp(2.8rem, 6vw, 5rem)",
+                  fontWeight: 400,
+                  lineHeight: 1.0,
+                  letterSpacing: "-0.02em",
+                  color: "var(--text)",
+                  margin: 0,
+                }}>
+                  Play music?
+                </h2>
+                <p style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontStyle: "italic",
+                  fontSize: "clamp(0.9rem, 1.4vw, 1.05rem)",
+                  color: "var(--text-2)",
+                  lineHeight: 1.7,
+                  margin: 0,
+                  maxWidth: "32ch",
+                }}>
+                  An ambient score composed for this experience.
+                </p>
+              </div>
 
-          {/* Content */}
-          <div style={{
-            position: "relative", zIndex: 1,
-            display: "flex", flexDirection: "column",
-            alignItems: "center", gap: "3rem",
-            textAlign: "center", padding: "0 2rem",
-          }}>
-            {/* Animated sound wave */}
-            <div style={{ display: "flex", alignItems: "flex-end", gap: "5px", height: "36px" }}>
-              {[0, 0.15, 0.08, 0.22, 0.05].map((delay, i) => (
-                <div key={i} style={{
-                  width: "3px", borderRadius: "3px",
-                  background: "var(--accent)", opacity: 0.6,
-                  animation: `bbar 0.8s ease-in-out infinite`,
-                  animationDelay: `${delay}s`,
-                }} />
-              ))}
-            </div>
+              {/* YES / NO buttons */}
+              <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+                {/* YES */}
+                <button
+                  onClick={handleMusicYes}
+                  aria-label="Yes, play music"
+                  style={{
+                    fontFamily: "JetBrains Mono, monospace",
+                    fontSize: "0.78rem",
+                    letterSpacing: "0.3em",
+                    textTransform: "uppercase",
+                    padding: "0.9rem 2.8rem",
+                    borderRadius: "100px",
+                    border: "1px solid var(--accent)",
+                    background: "var(--accent)",
+                    color: "var(--bg)",
+                    cursor: "pointer",
+                    transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+                    display: "flex", alignItems: "center", gap: "0.65rem",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.opacity = "0.85";
+                    (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
+                    (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 24px var(--accent-glow)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.opacity = "1";
+                    (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                    (e.currentTarget as HTMLElement).style.boxShadow = "none";
+                  }}
+                >
+                  <Volume2 size={14} />
+                  YES
+                </button>
 
-            {/* Heading */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                {/* NO */}
+                <button
+                  onClick={handleMusicNo}
+                  aria-label="No, skip music"
+                  style={{
+                    fontFamily: "JetBrains Mono, monospace",
+                    fontSize: "0.78rem",
+                    letterSpacing: "0.3em",
+                    textTransform: "uppercase",
+                    padding: "0.9rem 2.8rem",
+                    borderRadius: "100px",
+                    border: "1px solid var(--border)",
+                    background: "transparent",
+                    color: "var(--text-2)",
+                    cursor: "pointer",
+                    transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+                    display: "flex", alignItems: "center", gap: "0.65rem",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
+                    (e.currentTarget as HTMLElement).style.color = "var(--text)";
+                    (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
+                    (e.currentTarget as HTMLElement).style.color = "var(--text-2)";
+                    (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                  }}
+                >
+                  <VolumeX size={14} />
+                  NO
+                </button>
+              </div>
+
+              {/* Fine print */}
               <span style={{
                 fontFamily: "JetBrains Mono, monospace",
-                fontSize: "0.65rem",
-                letterSpacing: "0.4em",
-                textTransform: "uppercase",
+                fontSize: "0.58rem",
+                letterSpacing: "0.18em",
                 color: "var(--text-3)",
+                opacity: 0.55,
               }}>
-                AMBIENT SOUNDTRACK
+                YOU CAN TOGGLE AT ANY TIME ↘
               </span>
-              <h2 style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontSize: "clamp(2.8rem, 6vw, 5rem)",
-                fontWeight: 400,
-                lineHeight: 1.0,
-                letterSpacing: "-0.02em",
-                color: "var(--text)",
-                margin: 0,
-              }}>
-                Play music?
-              </h2>
-              <p style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontStyle: "italic",
-                fontSize: "clamp(0.9rem, 1.4vw, 1.05rem)",
-                color: "var(--text-2)",
-                lineHeight: 1.7,
-                margin: 0,
-                maxWidth: "32ch",
-              }}>
-                An ambient score composed for this experience.
-              </p>
             </div>
-
-            {/* YES / NO buttons */}
-            <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-              {/* YES */}
-              <button
-                onClick={handleMusicYes}
-                aria-label="Yes, play music"
-                style={{
-                  fontFamily: "JetBrains Mono, monospace",
-                  fontSize: "0.78rem",
-                  letterSpacing: "0.3em",
-                  textTransform: "uppercase",
-                  padding: "0.9rem 2.8rem",
-                  borderRadius: "100px",
-                  border: "1px solid var(--accent)",
-                  background: "var(--accent)",
-                  color: "var(--bg)",
-                  cursor: "pointer",
-                  transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
-                  display: "flex", alignItems: "center", gap: "0.65rem",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.opacity = "0.85";
-                  (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
-                  (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 24px var(--accent-glow)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.opacity = "1";
-                  (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                  (e.currentTarget as HTMLElement).style.boxShadow = "none";
-                }}
-              >
-                <Volume2 size={14} />
-                YES
-              </button>
-
-              {/* NO */}
-              <button
-                onClick={handleMusicNo}
-                aria-label="No, skip music"
-                style={{
-                  fontFamily: "JetBrains Mono, monospace",
-                  fontSize: "0.78rem",
-                  letterSpacing: "0.3em",
-                  textTransform: "uppercase",
-                  padding: "0.9rem 2.8rem",
-                  borderRadius: "100px",
-                  border: "1px solid var(--border)",
-                  background: "transparent",
-                  color: "var(--text-2)",
-                  cursor: "pointer",
-                  transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
-                  display: "flex", alignItems: "center", gap: "0.65rem",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
-                  (e.currentTarget as HTMLElement).style.color = "var(--text)";
-                  (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
-                  (e.currentTarget as HTMLElement).style.color = "var(--text-2)";
-                  (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                }}
-              >
-                <VolumeX size={14} />
-                NO
-              </button>
-            </div>
-
-            {/* Fine print */}
-            <span style={{
-              fontFamily: "JetBrains Mono, monospace",
-              fontSize: "0.58rem",
-              letterSpacing: "0.18em",
-              color: "var(--text-3)",
-              opacity: 0.55,
-            }}>
-              YOU CAN TOGGLE AT ANY TIME ↘
-            </span>
-          </div>
+          )}
         </div>
       )}
 
@@ -1046,7 +1059,7 @@ export function PortfolioFlow() {
           </div>
 
           {/* Typographic Columns — hidden on mobile to prevent horizontal overflow */}
-          <div className="hero-type-columns" style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "clamp(2rem, 12vw, 14rem)", overflow: "hidden", pointerEvents: "none" }}>
+          <div className="hero-type-columns" style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "clamp(1rem, 6vw, 8rem)", overflow: "hidden", pointerEvents: "none" }}>
             
             <div style={{ display: "flex", flexDirection: "row", gap: "2.5rem", alignItems: "flex-start", zIndex: 3 }}>
               
