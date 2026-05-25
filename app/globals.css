@@ -337,10 +337,27 @@ html.lenis body { height: auto; }
   }
 }
 
-/* Hero typographic columns — hide at mobile to prevent horizontal overflow */
+/* Hero typographic columns — responsive mobile sizing instead of hiding */
 @media (max-width: 640px) {
   .hero-type-columns {
-    display: none !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    padding-right: clamp(1rem, 6vw, 2rem) !important;
+  }
+  .hero-type-columns h1 {
+    font-size: clamp(3rem, 12vw, 4rem) !important;
+  }
+  /* Shrink the vertical Japanese labels */
+  .hero-type-columns div div div {
+    font-size: 0.72rem !important;
+  }
+  /* Reduce gap between Bhasit and Gupta columns */
+  .hero-type-columns > div {
+    gap: 1.2rem !important;
+  }
+  /* Reduce offset of the Gupta column on mobile */
+  .hero-type-columns > div > div:nth-child(2) {
+    margin-top: 2rem !important;
   }
 }
 
