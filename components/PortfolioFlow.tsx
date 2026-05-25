@@ -536,7 +536,7 @@ export function PortfolioFlow() {
               </div>
 
               {/* Heading */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", alignItems: "center" }}>
                 <span style={{
                   fontFamily: "JetBrains Mono, monospace",
                   fontSize: "0.65rem",
@@ -563,8 +563,9 @@ export function PortfolioFlow() {
                   fontSize: "clamp(0.9rem, 1.4vw, 1.05rem)",
                   color: "var(--text-2)",
                   lineHeight: 1.7,
-                  margin: 0,
+                  margin: "0 auto",
                   maxWidth: "32ch",
+                  textAlign: "center",
                 }}>
                   An ambient score composed for this experience.
                 </p>
