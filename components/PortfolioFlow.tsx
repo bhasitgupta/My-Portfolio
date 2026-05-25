@@ -1314,22 +1314,24 @@ export function PortfolioFlow() {
         zIndex: 500,
         display: "flex",
         alignItems: "center",
-        gap: "0.25rem",
+        gap: "0.4rem",
         padding: "0.35rem",
         borderRadius: "100px",
         background: "var(--surface)",
-        backdropFilter: "blur(20px)",
-        WebkitBackdropFilter: "blur(20px)",
+        backdropFilter: "blur(24px) saturate(120%)",
+        WebkitBackdropFilter: "blur(24px) saturate(120%)",
         border: "1px solid var(--border)",
         boxShadow: "var(--glass-specular)",
-        transition: "all 0.3s ease",
+        transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
         willChange: "transform"
       }}
+      onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent)"; }}
+      onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border)"; }}
     >
       <button
         onClick={() => { if (theme !== "light") toggle(); }}
         style={{
-          background: theme === "light" ? (theme === "light" ? "rgba(42, 43, 45, 0.1)" : "rgba(255, 255, 255, 0.45)") : "transparent",
+          background: theme === "light" ? "var(--accent)" : "transparent",
           cursor: "pointer",
           border: "none",
           borderRadius: "50%",
@@ -1338,10 +1340,14 @@ export function PortfolioFlow() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          color: "var(--text)",
+          color: theme === "light" ? "#ffffff" : "var(--text)",
           transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-          boxShadow: theme === "light" ? "0 2px 10px rgba(0,0,0,0.05)" : "none"
+          boxShadow: theme === "light" ? "0 4px 12px rgba(199, 172, 120, 0.35)" : "none",
+          transform: "scale(1.0)",
+          willChange: "transform"
         }}
+        onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.12)"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1.0)"; }}
         aria-label="Light Mode"
       >
         <Sun size={16} />
@@ -1349,7 +1355,7 @@ export function PortfolioFlow() {
       <button
         onClick={() => { if (theme !== "dark") toggle(); }}
         style={{
-          background: theme === "dark" ? "rgba(255, 255, 255, 0.15)" : "transparent",
+          background: theme === "dark" ? "var(--accent)" : "transparent",
           cursor: "pointer",
           border: "none",
           borderRadius: "50%",
@@ -1358,10 +1364,14 @@ export function PortfolioFlow() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          color: "var(--text)",
+          color: theme === "dark" ? "#ffffff" : "var(--text)",
           transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-          boxShadow: theme === "dark" ? "0 2px 10px rgba(0,0,0,0.15)" : "none"
+          boxShadow: theme === "dark" ? "0 4px 12px rgba(199, 172, 120, 0.35)" : "none",
+          transform: "scale(1.0)",
+          willChange: "transform"
         }}
+        onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.12)"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1.0)"; }}
         aria-label="Dark Mode"
       >
         <Moon size={16} />

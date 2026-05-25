@@ -39,21 +39,32 @@ function Stone({
   scale, 
   rotation, 
   color,
-  seed
+  seed,
+  roughness,
+  metalness,
+  bumpScale,
+  textures
 }: { 
   position: [number, number, number]; 
   scale: [number, number, number]; 
   rotation: [number, number, number]; 
   color: string;
   seed: number;
+  roughness: number;
+  metalness: number;
+  bumpScale: number;
+  textures: { bump: THREE.CanvasTexture | null; diffuse: THREE.CanvasTexture | null };
 }) {
   return (
     <mesh position={position} scale={scale} rotation={rotation} castShadow receiveShadow>
       <PebbleGeometry seed={seed} />
       <meshStandardMaterial
         color={color}
-        roughness={0.42} // Satin/polished sheen
-        metalness={0.12} // Soft reflection
+        map={textures.diffuse || undefined}
+        bumpMap={textures.bump || undefined}
+        bumpScale={bumpScale}
+        roughness={roughness}
+        metalness={metalness}
         flatShading={false}
       />
     </mesh>
@@ -75,6 +86,66 @@ function BalancedStones() {
     };
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  // Procedural noise bump-map and organic mineral diffuse map for realistic stone texture
+  const stoneTextures = useMemo(() => {
+    if (typeof document === "undefined") return { bump: null, diffuse: null };
+    
+    // 1. Create Bump Texture (fine-grained rock pores)
+    const canvasB = document.createElement("canvas");
+    canvasB.width = 256;
+    canvasB.height = 256;
+    const ctxB = canvasB.getContext("2d");
+    if (!ctxB) return { bump: null, diffuse: null };
+    
+    ctxB.fillStyle = "#808080";
+    ctxB.fillRect(0, 0, 256, 256);
+    const imgDataB = ctxB.getImageData(0, 0, 256, 256);
+    const dataB = imgDataB.data;
+    
+    for (let i = 0; i < dataB.length; i += 4) {
+      const noise = (Math.random() - 0.5) * 35; // Natural limestone pore density
+      const val = Math.min(255, Math.max(0, 128 + noise));
+      dataB[i] = val;
+      dataB[i+1] = val;
+      dataB[i+2] = val;
+    }
+    ctxB.putImageData(imgDataB, 0, 0);
+    const bump = new THREE.CanvasTexture(canvasB);
+    bump.wrapS = THREE.RepeatWrapping;
+    bump.wrapT = THREE.RepeatWrapping;
+    bump.repeat.set(5, 5); // Tiled for delicate micro-texture
+
+    // 2. Create Diffuse Texture (organic mineral spots/veins for realistic wabi-sabi tone variation)
+    const canvasD = document.createElement("canvas");
+    canvasD.width = 128;
+    canvasD.height = 128;
+    const ctxD = canvasD.getContext("2d");
+    if (!ctxD) return { bump, diffuse: null };
+    
+    ctxD.fillStyle = "#ffffff";
+    ctxD.fillRect(0, 0, 128, 128);
+    const imgDataD = ctxD.getImageData(0, 0, 128, 128);
+    const dataD = imgDataD.data;
+    
+    for (let i = 0; i < dataD.length; i += 4) {
+      const x = (i / 4) % 128;
+      const y = Math.floor((i / 4) / 128);
+      // Beautiful low-frequency organic mineral spots
+      const blotch = Math.sin(x * 0.12) * Math.cos(y * 0.12) * 0.12 + (Math.random() - 0.5) * 0.04;
+      const val = Math.min(255, Math.max(0, 255 * (1 + blotch)));
+      dataD[i] = val;
+      dataD[i+1] = val;
+      dataD[i+2] = val;
+    }
+    ctxD.putImageData(imgDataD, 0, 0);
+    const diffuse = new THREE.CanvasTexture(canvasD);
+    diffuse.wrapS = THREE.RepeatWrapping;
+    diffuse.wrapT = THREE.RepeatWrapping;
+    diffuse.repeat.set(1.5, 1.5);
+
+    return { bump, diffuse };
   }, []);
 
   // Curated Japandi Color Palette: Original terracotta/sandstone bases with a polished black top stone
@@ -172,6 +243,10 @@ function BalancedStones() {
           rotation={[0.12, 0.35, -0.05]}
           color={palette.bottom}
           seed={1}
+          roughness={0.88} // Porous sandstone feel
+          metalness={0.02}
+          bumpScale={0.016} // Pronounced wabi-sabi pore texture
+          textures={stoneTextures}
         />
         {/* Middle Stone (Warm Ochre/Rust) */}
         <Stone
@@ -180,6 +255,10 @@ function BalancedStones() {
           rotation={[-0.08, -0.45, 0.1]}
           color={palette.middle}
           seed={2}
+          roughness={0.72} // Soft clay texture
+          metalness={0.05}
+          bumpScale={0.010} // Moderate texture
+          textures={stoneTextures}
         />
         {/* Top Stone (Polished Black) */}
         <Stone
@@ -188,6 +267,10 @@ function BalancedStones() {
           rotation={[0.15, 0.15, -0.12]}
           color={palette.top}
           seed={3}
+          roughness={0.24} // Smooth glossy satin black river rock
+          metalness={0.16} // Elegant slight specular reflectivity
+          bumpScale={0.003} // Fine, almost invisible micro-pores
+          textures={stoneTextures}
         />
       </group>
 
