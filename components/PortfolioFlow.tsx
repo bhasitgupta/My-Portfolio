@@ -739,13 +739,14 @@ export function PortfolioFlow() {
               top: "clamp(1.5rem, 4vw, 3rem)", 
               left: "clamp(1.5rem, 4vw, 3rem)", 
               right: "clamp(1.5rem, 4vw, 3rem)", 
-              zIndex: 10, 
+              zIndex: 50, // Raised to sit proudly above stacking containers
               display: "flex", 
               justifyContent: "space-between",
               alignItems: "center",
               fontFamily: "Inter, sans-serif",
               fontSize: "0.9rem",
-              fontWeight: 500
+              fontWeight: 500,
+              pointerEvents: "auto" // Ensure it captures all clicks
             }}
           >
             <div style={{ flex: 1, paddingLeft: "clamp(3.5rem, 8vw, 6.5rem)" }}>© Bhasit Gupta</div>
@@ -786,13 +787,14 @@ export function PortfolioFlow() {
               position: "absolute", 
               bottom: "clamp(1.5rem, 4vw, 3rem)", 
               left: "clamp(1.5rem, 4vw, 3rem)", 
-              zIndex: 10, 
+              zIndex: 50, // Raised to stack above overlay columns
               display: "flex", 
               gap: "1.5rem", 
               fontFamily: "Inter, sans-serif", 
               fontSize: "0.85rem", 
               fontWeight: 500,
-              paddingLeft: "clamp(3.5rem, 8vw, 6.5rem)"
+              paddingLeft: "clamp(3.5rem, 8vw, 6.5rem)",
+              pointerEvents: "auto" // Capture all cursor events
             }}
           >
             <a href="https://linkedin.com/in/bhasitgupta" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", color: "inherit", opacity: 0.6, transition: "opacity 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.opacity = "1"} onMouseLeave={(e) => e.currentTarget.style.opacity = "0.6"}>LinkedIn</a>
@@ -810,7 +812,7 @@ export function PortfolioFlow() {
           </div>
 
           {/* Typographic Columns */}
-          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "clamp(2rem, 8vw, 8rem)", overflow: "hidden" }}>
+          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "clamp(2rem, 8vw, 8rem)", overflow: "hidden", pointerEvents: "none" }}>
             
             <div style={{ display: "flex", flexDirection: "row", gap: "2.5rem", alignItems: "flex-start", zIndex: 3 }}>
               
@@ -942,20 +944,12 @@ export function PortfolioFlow() {
               {/* Row 1: Side-by-side header */}
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "2.5rem", flexWrap: "wrap", width: "100%" }}>
                 
-                {/* Left: Title and Tagline */}
-                <div style={{ flex: "1 1 320px", display: "flex", flexDirection: "column", gap: "1rem" }}>
-                  <div className="reveal-title">
-                    <BigTitle color="var(--text)">
-                      I BUILD<br />
-                      <span style={{ color: "var(--accent)" }}>CLEAN.</span>
-                    </BigTitle>
-                  </div>
-
-                  <div className="reveal-text">
-                    <p style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "clamp(0.72rem, 1vw, 0.85rem)", color: "var(--accent)", letterSpacing: "0.04em", lineHeight: 1.6 }}>
-                      AI + Full Stack + Design —<br />crafting scalable products for the next generation of the web.
-                    </p>
-                  </div>
+                {/* Left: Title only to ensure perfect vertical center alignment */}
+                <div className="reveal-title" style={{ flex: "1 1 auto" }}>
+                  <BigTitle color="var(--text)">
+                    I BUILD<br />
+                    <span style={{ color: "var(--accent)" }}>CLEAN.</span>
+                  </BigTitle>
                 </div>
 
                 {/* Right: Portrait Image directly beside the title */}
@@ -966,8 +960,7 @@ export function PortfolioFlow() {
                     maxWidth: "170px",
                     display: "flex",
                     justifyContent: "center",
-                    alignItems: "center",
-                    margin: "0 auto"
+                    alignItems: "center"
                   }}
                 >
                   <div style={{
@@ -1007,6 +1000,13 @@ export function PortfolioFlow() {
                   </div>
                 </div>
 
+              </div>
+
+              {/* Tagline below the side-by-side header row */}
+              <div className="reveal-text" style={{ marginTop: "-0.5rem" }}>
+                <p style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "clamp(0.72rem, 1vw, 0.85rem)", color: "var(--accent)", letterSpacing: "0.04em", lineHeight: 1.6 }}>
+                  AI + Full Stack + Design —<br />crafting scalable products for the next generation of the web.
+                </p>
               </div>
 
               {/* Row 2: Full-width copy flowing underneath */}
