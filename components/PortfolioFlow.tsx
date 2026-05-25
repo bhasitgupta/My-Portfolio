@@ -751,35 +751,7 @@ export function PortfolioFlow() {
             }}
           >
             <div style={{ flex: 1, paddingLeft: "clamp(3.5rem, 8vw, 6.5rem)" }}>© Bhasit Gupta</div>
-            <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
-              <button 
-                onClick={toggle} 
-                style={{ 
-                  background: "none", 
-                  cursor: "pointer", 
-                  color: "inherit", 
-                  display: "flex", 
-                  alignItems: "center", 
-                  justifyContent: "center",
-                  padding: "0.5rem",
-                  borderRadius: "100px",
-                  backgroundColor: "var(--surface)",
-                  border: "1px solid var(--border)",
-                  transition: "all 0.2s"
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "var(--accent)";
-                  e.currentTarget.style.boxShadow = "0 0 10px var(--accent-glow)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "var(--border)";
-                  e.currentTarget.style.boxShadow = "none";
-                }}
-                aria-label="Toggle Theme"
-              >
-                {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
-              </button>
-            </div>
+            <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }} />
           </nav>
 
           {/* Social Links - Bottom Left */}
@@ -855,7 +827,7 @@ export function PortfolioFlow() {
           </div>
 
           {/* Typographic Columns */}
-          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "clamp(2rem, 8vw, 8rem)", overflow: "hidden", pointerEvents: "none" }}>
+          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "clamp(6rem, 24vw, 26rem)", overflow: "hidden", pointerEvents: "none" }}>
             
             <div style={{ display: "flex", flexDirection: "row", gap: "2.5rem", alignItems: "flex-start", zIndex: 3 }}>
               
