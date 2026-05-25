@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import FlowArt, { FlowSection } from "@/components/ui/story-scroll";
-import { Mail, Phone, Sun, Moon } from "lucide-react";
+import { Mail, Phone, Sun, Moon, Volume2, VolumeX } from "lucide-react";
 import { GithubIcon, LinkedinIcon, TwitterIcon } from "@/components/icons/GithubIcon";
 import { useTheme } from "@/components/ThemeProvider";
 
@@ -85,6 +85,34 @@ export function PortfolioFlow() {
   const { theme, toggle } = useTheme();
   const [activeSection, setActiveSection] = useState("hero");
   const [loading, setLoading] = useState(true);
+  const [playing, setPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    // Instantiate background audio loop on client side mount
+    const audio = new Audio("/background.mp3");
+    audio.loop = true;
+    audio.volume = 0.45; // Smooth, premium background level
+    audioRef.current = audio;
+
+    return () => {
+      audio.pause();
+    };
+  }, []);
+
+  const toggleMusic = () => {
+    if (!audioRef.current) return;
+    if (playing) {
+      audioRef.current.pause();
+      setPlaying(false);
+    } else {
+      audioRef.current.play().then(() => {
+        setPlaying(true);
+      }).catch((err) => {
+        console.error("Audio playback blocked by browser policies:", err);
+      });
+    }
+  };
   const [progress, setProgress] = useState(0);
 
   // Refs for GSAP ScrollTrigger Intro Section
@@ -1305,7 +1333,7 @@ export function PortfolioFlow() {
       </FlowSection>
     </FlowArt>
 
-    {/* Floating Serenity Theme Control Pill-Bar (Bottom-Right) */}
+    {/* Floating Serenity Theme & Sound Control Pill-Bar (Bottom-Right) */}
     <div 
       style={{
         position: "fixed",
@@ -1328,6 +1356,36 @@ export function PortfolioFlow() {
       onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent)"; }}
       onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border)"; }}
     >
+      {/* Sound Control Toggle */}
+      <button
+        onClick={toggleMusic}
+        style={{
+          background: playing ? "var(--accent)" : "transparent",
+          cursor: "pointer",
+          border: "none",
+          borderRadius: "50%",
+          width: "36px",
+          height: "36px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: playing ? "#ffffff" : "var(--text)",
+          transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+          boxShadow: playing ? "0 4px 12px rgba(199, 172, 120, 0.35)" : "none",
+          transform: "scale(1.0)",
+          willChange: "transform"
+        }}
+        onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.12)"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1.0)"; }}
+        aria-label="Toggle Music"
+      >
+        {playing ? <Volume2 size={16} /> : <VolumeX size={16} />}
+      </button>
+
+      {/* Subtle Specular Vertical Divider */}
+      <div style={{ width: "1px", height: "18px", background: "var(--border)", margin: "0 0.15rem", opacity: 0.5 }} />
+
+      {/* Theme Control Toggles */}
       <button
         onClick={() => { if (theme !== "light") toggle(); }}
         style={{
