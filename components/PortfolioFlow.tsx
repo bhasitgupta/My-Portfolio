@@ -1050,14 +1050,7 @@ export function PortfolioFlow() {
             </a>
           </div>
 
-          {/* Role Text - Bottom Right */}
-          <div 
-            style={{ position: "absolute", bottom: "clamp(1.5rem, 4vw, 3rem)", right: "clamp(1.5rem, 4vw, 3rem)", zIndex: 10, textAlign: "right", fontFamily: "'Cormorant Garamond', serif", fontSize: "1.3rem", fontStyle: "italic", fontWeight: 500, lineHeight: 1.3, letterSpacing: "-0.01em", color: "var(--text-2)" }}
-          >
-            AI/ML Engineer<br/>
-            Full Stack Developer<br/>
-            Creative Technologist
-          </div>
+
 
           {/* Typographic Columns — hidden on mobile to prevent horizontal overflow */}
           <div className="hero-type-columns" style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "clamp(6rem, 16vw, 18rem)", overflow: "hidden", pointerEvents: "none" }}>
