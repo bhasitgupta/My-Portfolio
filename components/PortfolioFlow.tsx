@@ -673,6 +673,67 @@ export function PortfolioFlow() {
             </a>
           );
         })}
+
+        {/* ═══════════════════════════════════════════════════
+            Horizontal Row of Social Links
+        ═══════════════════════════════════════════════════ */}
+        <div 
+          style={{ 
+            display: "flex", 
+            gap: "1.25rem", 
+            marginTop: "1.5rem", 
+            pointerEvents: "auto",
+            fontFamily: "Inter, sans-serif",
+            fontSize: "0.8rem",
+            letterSpacing: "normal"
+          }}
+        >
+          <a 
+            href="https://www.linkedin.com/in/bhasitgupta" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            style={{ 
+              textDecoration: "none", 
+              color: "var(--text-2)", 
+              opacity: 0.6, 
+              transition: "opacity 0.25s, color 0.25s" 
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.color = "var(--accent)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = "0.6"; e.currentTarget.style.color = "var(--text-2)"; }}
+          >
+            LinkedIn
+          </a>
+          <a 
+            href="https://twitter.com/Bhasit1009" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            style={{ 
+              textDecoration: "none", 
+              color: "var(--text-2)", 
+              opacity: 0.6, 
+              transition: "opacity 0.25s, color 0.25s" 
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.color = "var(--accent)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = "0.6"; e.currentTarget.style.color = "var(--text-2)"; }}
+          >
+            Twitter
+          </a>
+          <a 
+            href="https://github.com/bhasitgupta" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            style={{ 
+              textDecoration: "none", 
+              color: "var(--text-2)", 
+              opacity: 0.6, 
+              transition: "opacity 0.25s, color 0.25s" 
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.color = "var(--accent)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = "0.6"; e.currentTarget.style.color = "var(--text-2)"; }}
+          >
+            GitHub
+          </a>
+        </div>
       </div>
 
       {/* ═══════════════════════════════════════════════════
