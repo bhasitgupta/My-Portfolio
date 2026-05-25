@@ -94,9 +94,34 @@ export function PortfolioFlow() {
     audio.volume = 0.45; // Smooth, premium background level
     audioRef.current = audio;
 
+    // Auto-play on first user interaction (browsers block audio without gesture)
+    const tryAutoPlay = () => {
+      if (!audioRef.current || playing) return;
+      audioRef.current.play().then(() => {
+        setPlaying(true);
+      }).catch(() => {
+        // Silently fail — user can always click the pill bar button
+      });
+      // Remove listeners after first successful trigger
+      window.removeEventListener("scroll", tryAutoPlay);
+      window.removeEventListener("click", tryAutoPlay);
+      window.removeEventListener("touchstart", tryAutoPlay);
+      window.removeEventListener("keydown", tryAutoPlay);
+    };
+
+    window.addEventListener("scroll", tryAutoPlay, { passive: true, once: true });
+    window.addEventListener("click", tryAutoPlay, { once: true });
+    window.addEventListener("touchstart", tryAutoPlay, { passive: true, once: true });
+    window.addEventListener("keydown", tryAutoPlay, { once: true });
+
     return () => {
       audio.pause();
+      window.removeEventListener("scroll", tryAutoPlay);
+      window.removeEventListener("click", tryAutoPlay);
+      window.removeEventListener("touchstart", tryAutoPlay);
+      window.removeEventListener("keydown", tryAutoPlay);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const toggleMusic = () => {
@@ -861,7 +886,7 @@ export function PortfolioFlow() {
           </div>
 
           {/* Typographic Columns — hidden on mobile to prevent horizontal overflow */}
-          <div className="hero-type-columns" style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "clamp(6rem, 24vw, 26rem)", overflow: "hidden", pointerEvents: "none" }}>
+          <div className="hero-type-columns" style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "clamp(2rem, 12vw, 14rem)", overflow: "hidden", pointerEvents: "none" }}>
             
             <div style={{ display: "flex", flexDirection: "row", gap: "2.5rem", alignItems: "flex-start", zIndex: 3 }}>
               
